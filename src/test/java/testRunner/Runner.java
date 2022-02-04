@@ -12,7 +12,7 @@ import io.cucumber.testng.CucumberOptions;
 		
 		features="src/test/java/features",
 		glue="Zerodha",
-		tags = "@player"
+		tags = "@test"
 		)
 					
 public class Runner extends AbstractTestNGCucumberTests{

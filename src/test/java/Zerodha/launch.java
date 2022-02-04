@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
@@ -111,7 +112,7 @@ public class launch extends BaseClass {
 
             }
 
-//
+
 
         } catch (NoSuchElementException e) {
             driver.navigate().refresh();
@@ -134,4 +135,67 @@ public class launch extends BaseClass {
 
     }
 
+    @Then("user enters player name")
+    public void user_enters_player_name(){
+        try {
+            element.playerName().sendKeys("test player");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    @Then("user selects player team from dropdwon")
+    public void team_dropdown(){
+        Select objSelect =new Select(driver.findElement(By.className("custom-select ng-pristine ng-valid ng-touched")));
+        objSelect.selectByVisibleText("Spain"); //selecting country drop down
+
+    }
+    @When("user clicks add player")
+    public void add_player(){
+        try {
+            element.addPlayer().click();
+            System.out.println("Add player clicked");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    @Then("user should be able to see newly added player details in the list")
+    public void new_player_verify() {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 30); //Explicit wait
+            wait.until(ExpectedConditions.elementToBeClickable(element.view()));
+
+            List<WebElement> playersList = new ArrayList<>();
+            playersList = driver.findElements(By.xpath("/html/body/app-root/ng-component/div/table/tbody/tr"));
+
+            for (WebElement element : playersList) {
+                String player = element.findElement(By.xpath("/html/body/app-root/ng-component/div/table/tbody/tr")).getText();
+                System.out.println(player);
+                Assert.assertTrue(player.contains("test player"));  //assertion for players data
+
+            }
+
+
+
+        } catch (NoSuchElementException e) {
+            driver.navigate().refresh();
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+
+            js.executeScript("arguments[0].click();", element.view()); // clicking players icon using java script executor
+            List<WebElement> playersList = new ArrayList<>();
+            playersList = driver.findElements(By.xpath("/html/body/app-root/ng-component/div/table/tbody/tr"));
+
+            for (WebElement element : playersList) {
+                String player = element.findElement(By.xpath("/html/body/app-root/ng-component/div/table/tbody/tr")).getText();
+                System.out.println(player);
+                Assert.assertTrue(player.contains("test player"));  //assertion for players data
+
+            }
+
+        } finally {
+            System.out.println("user addition succesful");
+        }
+
+    }
 }

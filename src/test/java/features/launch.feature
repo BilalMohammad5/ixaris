@@ -1,12 +1,12 @@
 Feature: World Cup Home Page
 
-  @smoke @regression @home  @tc1  @view
+  @smoke @regression @home  @tc1  @view @test
   Scenario:Launch World cup home page
     Given user launches world cup
     When user is on home screen
     Then user should be able to see welcome message
 
-  @smoke @regression @player  @tc2 @view
+  @smoke @regression @player  @tc2 @view @test
   Scenario:user views to players details
     Given user launches world cup
     When user navigates to players tab
@@ -20,7 +20,7 @@ Feature: World Cup Home Page
     When user clicks view
     Then user should be able to see player info
 
-  @smoke @regression @player  @tc4 @edit
+  @smoke @regression @player  @tc4 @edit @test
   Scenario:user adds new player
     Given user launches world cup
     When user navigates to players tab
